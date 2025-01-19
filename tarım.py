@@ -4,9 +4,19 @@ import pickle
 import gdown
 import pickle
 
+import gdown
+import pandas as pd
+import pickle
+import streamlit as st
+
 # Google Drive bağlantısını buraya ekleyin
 url = 'https://drive.google.com/uc?id=1GP_yrRY4uKQLfVbAs8t0uvQiFpf8S6rr'
 gdown.download(url, 'Linear_model.pkl', quiet=False)
+
+# Modeli yükle
+with open('Linear_model.pkl', 'rb') as file:
+    model = pickle.load(file)
+
 
 # Dosyayı açın ve modeli yükleyin
 with open('Linear_model.pkl', 'rb') as file:
