@@ -5,13 +5,10 @@ import gdown
 
 # Google Drive bağlantısını buraya ekleyin
 url_model = 'https://drive.google.com/uc?id=1GP_yrRY4uKQLfVbAs8t0uvQiFpf8S6rr'
-url_encoders = 'https://drive.google.com/uc?id=1TkhMiWi8o7Z3eZ3IggD3nP2V5D9KT0cJ'
-url_columns = 'https://drive.google.com/uc?id=1fl8_Fjw1BO3bV2p_UQ5alY0rbvR-aGv7'
+
 
 # Model, encoder ve column dosyalarını indir
 gdown.download(url_model, 'Linear_model.pkl', quiet=False)
-gdown.download(url_encoders, 'encoders.pkl', quiet=False)
-gdown.download(url_columns, 'model_columns.pkl', quiet=False)
 
 # Modeli ve encoders'ı yükle
 with open('Linear_model.pkl', 'rb') as file:
