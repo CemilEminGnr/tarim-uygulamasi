@@ -2,36 +2,28 @@ import streamlit as st
 import pandas as pd
 import pickle
 import gdown
-import pickle
-
-import gdown
-import pandas as pd
-import pickle
-import streamlit as st
 
 # Google Drive bağlantısını buraya ekleyin
-url = 'https://drive.google.com/uc?id=1GP_yrRY4uKQLfVbAs8t0uvQiFpf8S6rr'
-gdown.download(url, 'Linear_model.pkl', quiet=False)
+url_model = 'https://drive.google.com/uc?id=1GP_yrRY4uKQLfVbAs8t0uvQiFpf8S6rr'
+url_encoders = 'https://drive.google.com/uc?id=1TkhMiWi8o7Z3eZ3IggD3nP2V5D9KT0cJ'
+url_columns = 'https://drive.google.com/uc?id=1fl8_Fjw1BO3bV2p_UQ5alY0rbvR-aGv7'
 
-# Modeli yükle
+# Model, encoder ve column dosyalarını indir
+gdown.download(url_model, 'Linear_model.pkl', quiet=False)
+gdown.download(url_encoders, 'encoders.pkl', quiet=False)
+gdown.download(url_columns, 'model_columns.pkl', quiet=False)
+
+# Modeli ve encoders'ı yükle
 with open('Linear_model.pkl', 'rb') as file:
     model = pickle.load(file)
 
-
-# Dosyayı açın ve modeli yükleyin
-with open('Linear_model.pkl', 'rb') as file:
-    model = pickle.load(file)
-
-# Model ve encoders yükle
-with open('C:\\Users\\CEMİL EMİN GÜNGÖR\\Linear_model.pkl', 'rb') as file:
-    model = pickle.load(file)
-    
-with open('C:\\Users\\CEMİL EMİN GÜNGÖR\\encoders.pkl', 'rb') as file:
+with open('encoders.pkl', 'rb') as file:
     encoders = pickle.load(file)
 
-with open('C:\\Users\\CEMİL EMİN GÜNGÖR\\model_columns.pkl', 'rb') as file:
+with open('model_columns.pkl', 'rb') as file:
     model_columns = pickle.load(file)
 
+# Başlık
 st.title("Tarım Yapılacak Alan Bilgileri")
 
 # Kullanıcıdan verileri al
