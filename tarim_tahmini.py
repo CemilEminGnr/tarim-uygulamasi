@@ -9,8 +9,8 @@ from google.oauth2 import service_account
 from sklearn.preprocessing import LabelEncoder
 
 # Google Drive API için gerekli ayarlar
-SERVICE_ACCOUNT_FILE = r'C:\Users\CEMİL EMİN GÜNGÖR\Downloads\composite-bruin-448609-g1-99bf9774b3f4.json'
-# Servis hesabı JSON dosyasının yolu
+SERVICE_ACCOUNT_FILE = r'C:\Users\CEMİL EMİN GÜNGÖR\Downloads\composite-bruin-448609-g1-fe0f5d8afb6c.json'
+# Servis hesabı JSON dosyasının yolu (yeni dosya adıyla)
 SCOPES = ['https://www.googleapis.com/auth/drive.readonly']
 
 # Servis hesabını yükleme
