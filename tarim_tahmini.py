@@ -35,7 +35,7 @@ with open(file_name, 'wb') as file:
 
 print(f"{file_name} başarıyla indirildi.")
 
-# Modeli yükle (model_data doğrudan model nesnesi olacak)
+# Modeli yükle
 with open(file_name, 'rb') as file:
     model = pickle.load(file)
 
@@ -45,17 +45,17 @@ st.title("Tarım Yapılacak Alan Bilgileri")
 # Kullanıcıdan verileri al
 region = st.selectbox(
     "Tarım Yapılacak Bölgeyi Seçiniz",
-    ["Bölge 1", "Bölge 2", "Bölge 3"]  # Buraya doğru bölge adlarını koymanız gerekebilir
+    ["Bölge 1", "Bölge 2", "Bölge 3"]
 )
 
 soil_type = st.selectbox(
     "Tarım Yapacağınız Toprak Türünü Seçiniz",
-    ["Toprak Türü 1", "Toprak Türü 2", "Toprak Türü 3"]  # Buraya toprak türlerini ekleyin
+    ["Toprak Türü 1", "Toprak Türü 2", "Toprak Türü 3"]
 )
 
 crop = st.selectbox(
     "Tarım Yapacağınız Ürünü Seçiniz",
-    ["Ürün 1", "Ürün 2", "Ürün 3"]  # Ürün seçeneklerini burada ekleyebilirsiniz
+    ["Ürün 1", "Ürün 2", "Ürün 3"]
 )
 
 rainfall_mm = st.number_input("Ortalama Yağış Miktarı (mm):", min_value=0.0)
@@ -65,14 +65,18 @@ irrigation_used = st.selectbox("Sulama Kullanılacak mı:", [False, True])
 
 weather_condition = st.selectbox(
     "Tarım Yapılacak Mevsim",
-    ["Mevsim 1", "Mevsim 2", "Mevsim 3"]  # Mevsim seçeneklerini buraya ekleyin
+    ["Mevsim 1", "Mevsim 2", "Mevsim 3"]
 )
 
 days_to_harvest = st.number_input("Hasat Edilecek Gün:", min_value=0)
 
 if st.button("Tahmin Et"):
-    # Girdi verilerinin dönüştürülmesi (Varsayalım ki encoder'lar buraya el ile eklenebilir)
-    # Burada encoder'ları ve model_columns'ı manuel olarak eklemelisiniz
+    # Kategorik verileri dönüştürme
+    label_encoder_region = LabelEncoder()
+    label_encoder_soil_type = LabelEncoder()
+    label_encoder_crop = LabelEncoder()
+    label_encoder_weather_condition = LabelEncoder()
+
     input_data = pd.DataFrame({
         'Rainfall_mm': [rainfall_mm],
         'Temperature_Celsius': [temperature_celsius],
@@ -85,17 +89,21 @@ if st.button("Tahmin Et"):
         'Weather_Condition': [weather_condition]
     })
 
-    # Eğer encoder kullanıyorsanız burada dönüştürmeleri yapmalısınız
-    # For example, using LabelEncoder for the categorical features
-    # input_data['Region'] = label_encoder_region.transform(input_data['Region'])
-    # Apply similar transformations to other categorical columns
+    # Kategorik verileri dönüştürme
+    input_data['Region'] = label_encoder_region.fit_transform(input_data['Region'])
+    input_data['Soil_Type'] = label_encoder_soil_type.fit_transform(input_data['Soil_Type'])
+    input_data['Crop'] = label_encoder_crop.fit_transform(input_data['Crop'])
+    input_data['Weather_Condition'] = label_encoder_weather_condition.fit_transform(input_data['Weather_Condition'])
 
-    # Eksik sütunları doldur (model_columns'ı doğru şekilde eklemelisiniz)
-    # for col in model_columns:
-    #     if col not in input_data.columns:
-    #         input_data[col] = 0
+    # Modelin sütun sırasını ayarlama
+    model_columns = ['Rainfall_mm', 'Temperature_Celsius', 'Fertilizer_Used', 'Irrigation_Used', 
+                     'Days_to_Harvest', 'Region', 'Soil_Type', 'Crop', 'Weather_Condition']
 
-    # input_data = input_data[model_columns]
+    for col in model_columns:
+        if col not in input_data.columns:
+            input_data[col] = 0
+
+    input_data = input_data[model_columns]
 
     # Tahmin yap
     prediction = model.predict(input_data)
